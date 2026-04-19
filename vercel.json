@@ -7,11 +7,15 @@
       "destination": "/assets/:path*"
     },
     {
-      "source": "/eth-wthr/:path*",
+      "source": "/eth-wthr",
       "destination": "/index.html"
     },
     {
-      "source": "/eth-wthr",
+      "source": "/eth-wthr/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/eth-wthr/:path*",
       "destination": "/index.html"
     }
   ]
