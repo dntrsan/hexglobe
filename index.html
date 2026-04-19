@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HexGlobe — 六角形の地球</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #fff;
+    }
+    #app { width: 100vw; height: 100vh; position: relative; }
+
+    /* Loading screen */
+    #loading {
+      position: fixed; inset: 0;
+      background: #000;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 100;
+      gap: 24px;
+    }
+    #loading h1 {
+      font-size: 1.4rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: #8bbfff;
+    }
+    .progress-bar {
+      width: 240px; height: 2px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4a8fff, #88cfff);
+      width: 0%;
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+    #loading-text { font-size: 0.75rem; color: rgba(255,255,255,0.4); letter-spacing: 0.05em; }
+    #loading.hidden { opacity: 0; pointer-events: none; transition: opacity 0.8s ease; }
+
+    /* Labels layer */
+    #labels-layer {
+      position: absolute; inset: 0;
+      pointer-events: none;
+    }
+    .city-label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.85);
+      white-space: nowrap;
+      text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6);
+      letter-spacing: 0.03em;
+      pointer-events: none;
+      transform: translate(-50%, -100%);
+      padding-bottom: 2px;
+    }
+    .landmark-label {
+      font-size: 16px;
+      text-shadow: 0 0 6px rgba(0,0,0,0.9);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      line-height: 1;
+    }
+    .landmark-name {
+      display: block;
+      font-size: 9px;
+      color: rgba(255,220,100,0.9);
+      text-align: center;
+      text-shadow: 0 0 4px rgba(0,0,0,0.9);
+      white-space: nowrap;
+      margin-top: 1px;
+    }
+    .landmark-name-label {
+      font-size: 9px;
+      color: rgba(255,225,120,0.9);
+      white-space: nowrap;
+      text-shadow: 0 0 4px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.7);
+      letter-spacing: 0.04em;
+      pointer-events: none;
+      transform: translate(-50%, -100%);
+      padding-bottom: 3px;
+    }
+
+    /* UI Panel */
+    #ui-panel {
+      position: fixed;
+      bottom: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; align-items: center;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 10px 16px;
+      backdrop-filter: blur(12px);
+      z-index: 10;
+    }
+    #ui-panel label { font-size: 11px; color: rgba(255,255,255,0.5); white-space: nowrap; }
+    #weather-key {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 11px;
+      padding: 4px 8px;
+      width: 180px;
+      outline: none;
+    }
+    #weather-key::placeholder { color: rgba(255,255,255,0.25); }
+    #weather-key:focus { border-color: rgba(100,160,255,0.4); }
+    #apply-key {
+      background: rgba(80,140,255,0.2);
+      border: 1px solid rgba(80,140,255,0.3);
+      color: rgba(180,210,255,0.9);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #apply-key:hover { background: rgba(80,140,255,0.35); }
+    #weather-status { font-size: 10px; color: rgba(100,200,100,0.7); }
+
+    /* Info tooltip */
+    #hint {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; color: rgba(255,255,255,0.3);
+      pointer-events: none; letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="loading">
+      <h1>HEX GLOBE</h1>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div id="loading-text">地形データを生成中...</div>
+    </div>
+    <div id="labels-layer"></div>
+    <div id="hint">ドラッグで回転 / スクロールでズーム</div>
+    <div id="ui-panel">
+      <label>OpenWeatherMap API Key</label>
+      <input id="weather-key" type="password" placeholder="API キーを入力..." />
+      <button id="apply-key">適用</button>
+      <span id="weather-status"></span>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

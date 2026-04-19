@@ -1,0 +1,18 @@
+{
+  "outputDirectory": "dist",
+  "buildCommand": "npm run build",
+  "rewrites": [
+    {
+      "source": "/eth-wthr/assets/:path*",
+      "destination": "/assets/:path*"
+    },
+    {
+      "source": "/eth-wthr/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/eth-wthr",
+      "destination": "/index.html"
+    }
+  ]
+}
